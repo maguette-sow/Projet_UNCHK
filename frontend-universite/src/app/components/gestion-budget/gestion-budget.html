@@ -1,0 +1,39 @@
+<div style="padding: 10px;">
+  <h3 style="color: #2c3e50; border-bottom: 2px solid #239b56; padding-bottom: 5px; margin-bottom: 20px;">
+    Axe Administration - Pilotage Financier & Allocations Budgétaires
+  </h3>
+
+  <div style="display: flex; gap: 20px;">
+    <!-- Formulaire d'Allocation -->
+    <fieldset style="flex: 1; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+      <legend style="color: #239b56; padding: 0 5px;"><strong>Allouer des Fonds Globaux</strong></legend>
+      <form (ngSubmit)="initialiserEnveloppe()">
+        <label style="display:block; margin-bottom: 5px;">Année Fiscale :</label>
+        <input type="number" [(ngModel)]="budgetData.anneeFiscale" name="annee" required style="width: 95%; padding: 6px; margin-bottom: 10px;">
+
+        <label style="display:block; margin-bottom: 5px;">Montant Alloué (FCFA) :</label>
+        <input type="number" [(ngModel)]="budgetData.montantAlloue" name="montant" required style="width: 95%; padding: 6px; margin-bottom: 10px;">
+
+        <label style="display:block; margin-bottom: 5px;">Description de l'Affectation :</label>
+        <input type="text" [(ngModel)]="budgetData.descriptionAllocation" name="desc" placeholder="Ex: Matériel informatique, Salaires..." required style="width: 95%; padding: 6px; margin-bottom: 15px;">
+
+        <button type="submit" style="padding: 7px 15px; background-color: #239b56; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Initialiser le Budget</button>
+      </form>
+    </fieldset>
+
+    <!-- Formulaire d'Imputation des Dépenses -->
+    <fieldset style="flex: 1; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+      <legend style="color: #a93226; padding: 0 5px;"><strong>Imputer une Dépense Institutionnelle</strong></legend>
+      <form (ngSubmit)="enregistrerFrais()">
+        <label style="display:block; margin-bottom: 5px;">Année Fiscale d'Imputation :</label>
+        <input type="number" [(ngModel)]="depenseData.annee" name="anneeDep" required style="width: 95%; padding: 6px; margin-bottom: 10px;">
+
+        <label style="display:block; margin-bottom: 5px;">Montant du Retrait (FCFA) :</label>
+        <input type="number" [(ngModel)]="depenseData.montant" name="montantDep" required style="width: 95%; padding: 6px; margin-bottom: 20px;">
+
+        <button type="submit" style="padding: 7px 15px; background-color: #a93226; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Retirer les Fonds</button>
+      </form>
+    </fieldset>
+  </div>
+</div>
+

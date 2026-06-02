@@ -1,0 +1,54 @@
+<div style="padding: 20px; font-family: Arial, sans-serif;">
+  <h2>Administration - Gestion des Utilisateurs</h2>
+
+  <!-- Formulaire d'inscription -->
+  <fieldset style="margin-bottom: 20px; padding: 15px; border-radius: 5px; border: 1px solid #ccc;">
+    <legend><strong>Créer un nouveau compte</strong></legend>
+    <form (ngSubmit)="ajouterUtilisateur()">
+      <input type="text" [(ngModel)]="nouvelUtilisateur.nom" name="nom" placeholder="Nom" required style="margin-right: 10px; padding: 5px;">
+      <input type="text" [(ngModel)]="nouvelUtilisateur.prenom" name="prenom" placeholder="Prénom" required style="margin-right: 10px; padding: 5px;">
+      <input type="email" [(ngModel)]="nouvelUtilisateur.email" name="email" placeholder="Email" required style="margin-right: 10px; padding: 5px;">
+      <input type="password" [(ngModel)]="nouvelUtilisateur.motDePasse" name="motDePasse" placeholder="Mot de passe" required style="margin-right: 10px; padding: 5px;">
+
+      <select [(ngModel)]="nouvelUtilisateur.role" name="role" style="margin-right: 10px; padding: 5px;">
+        <option value="ADMIN">Administrateur</option>
+        <option value="ADMINISTRATIF">Personnel Administratif</option>
+        <option value="ENSEIGNANT">Enseignant</option>
+        <option value="ETUDIANT">Étudiant</option>
+      </select>
+
+      <button type="submit" style="padding: 6px 12px; background-color: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer;">Enregistrer</button>
+    </form>
+  </fieldset>
+
+  <!-- Tableau des comptes existants -->
+  <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left;">
+    <thead style="background-color: #f2f2f2;">
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Email</th>
+      <th>Rôle</th>
+      <th>Statut</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 🌟 Nouvelle syntaxe officielle Angular 19 (Plus aucun avertissement) -->
+      @for (user of utilisateurs; track user.id) {
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.nom }}</td>
+          <td>{{ user.prenom }}</td>
+          <td>{{ user.email }}</td>
+          <td><span style="font-weight: bold;">{{ user.role }}</span></td>
+          <td>{{ user.statutCompte ? 'Actif' : 'Inactif' }}</td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="6" style="text-align: center; color: #999; font-style: italic;">Aucun utilisateur trouvé</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,63 @@
+<div style="padding: 10px;">
+  <h3 style="color: #2c3e50; border-bottom: 2px solid #138d75; padding-bottom: 5px; margin-bottom: 20px;">
+    Axe Étudiant - Observatoire de l'Insertion Professionnelle & Suivi des Diplômés
+  </h3>
+
+  <!-- Enregistrement Situation -->
+  <fieldset style="margin-bottom: 25px; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+    <legend style="color: #138d75; padding: 0 5px;"><strong>Déclarer le Parcours d'un Alumnus</strong></legend>
+    <form (ngSubmit)="enregistrerSuivi()">
+      <input type="number" [(ngModel)]="insertion.etudiantId" name="id" placeholder="ID Diplômé" required style="margin-right: 10px; padding: 6px; width: 110px;">
+
+      <select [(ngModel)]="insertion.statutActuel" name="statut" style="margin-right: 10px; padding: 6px;">
+        <option value="EN_POSTE">En Poste / Salarié</option>
+        <option value="EN_RECHERCHE">En Recherche d'Emploi</option>
+        <option value="POURSUITE_ETUDES">Poursuite d'Études (Master/Doctorat)</option>
+      </select>
+
+      <input type="text" [(ngModel)]="insertion.intitulePoste" name="poste" placeholder="Intitulé du Poste" style="margin-right: 10px; padding: 6px; width: 180px;">
+      <input type="text" [(ngModel)]="insertion.entreprise" name="ent" placeholder="Entreprise / Cabinet" style="margin-right: 10px; padding: 6px; width: 180px;">
+
+      <button type="submit" style="padding: 6px 15px; background-color: #138d75; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Valider la Situation</button>
+    </form>
+  </fieldset>
+
+  <!-- Statistiques -->
+  <fieldset style="padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+    <legend style="color: #34495e; padding: 0 5px;"><strong>Indicateurs Majeurs d'Insertion (Module 5)</strong></legend>
+    <div style="margin-bottom: 15px;">
+      <select [(ngModel)]="filtreStatut" name="filtre" style="margin-right: 10px; padding: 6px;">
+        <option value="EN_POSTE">Lister les diplômés en activité</option>
+        <option value="EN_RECHERCHE">Lister les diplômés en recherche d'emploi</option>
+        <option value="POURSUITE_ETUDES">Lister les diplômés en reprise d'études</option>
+      </select>
+      <button (click)="chargerStatistiques()" style="padding: 6px 15px; background-color: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Générer l'Analyse</button>
+    </div>
+
+    <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px;">
+      <thead style="background-color: #f2f2f2;">
+      <tr>
+        <th>Référence Diplômé</th>
+        <th>Structure d'Accueil</th>
+        <th>Fonction Exercée</th>
+        <th>Date de Recrutement / Statut</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (d of diplomes; track d.id) {
+          <tr>
+            <td><strong>Étudiant #{{ d.etudiantId }}</strong></td>
+            <td>{{ d.entreprise || 'N/A' }}</td>
+            <td>{{ d.intitulePoste || 'N/A' }}</td>
+            <td>{{ d.dateEmbauche || 'En attente' }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" style="text-align: center; color: #999; font-style: italic; padding: 15px;">Aucun indicateur disponible. Lancez une analyse pour ce statut.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </fieldset>
+</div>
+

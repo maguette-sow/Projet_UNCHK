@@ -1,0 +1,80 @@
+<div style="padding: 10px;">
+  <h3 style="color: #2c3e50; border-bottom: 2px solid #007bff; padding-bottom: 5px; margin-bottom: 20px;">
+    Axe Communication - Dématérialisation Administrative & Suivi des Conseils
+  </h3>
+
+  <!-- Formulaire de Planification -->
+  <fieldset style="margin-bottom: 25px; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+    <legend style="padding: 0 5px; color: #007bff;"><strong>Planifier une Réunion / un Conseil</strong></legend>
+    <form (ngSubmit)="planifier()">
+      <input type="text" [(ngModel)]="nouvelleReunion.ordreDuJour" name="ordre" placeholder="Ordre du jour" required style="margin-right: 10px; padding: 6px; width: 300px;">
+      <input type="datetime-local" [(ngModel)]="nouvelleReunion.dateHeure" name="date" required style="margin-right: 10px; padding: 6px;">
+      <input type="text" [(ngModel)]="nouvelleReunion.lieuOuLien" name="lieu" placeholder="Salle physique ou Lien Visio" required style="margin-right: 10px; padding: 6px; width: 200px;">
+      <button type="submit" style="padding: 6px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Planifier</button>
+    </form>
+  </fieldset>
+
+  <!-- Zone de rédaction dynamique du PV (s'affiche uniquement si on clique sur clôturer) -->
+  @if (reunionACloturerId !== null) {
+    <div style="background-color: #fff3cd; padding: 15px; margin-bottom: 25px; border-radius: 5px; border: 1px solid #ffeeba;">
+      <h4 style="margin-top: 0; color: #856404;">📝 Rédaction du Compte-Rendu pour la Réunion ID: {{ reunionACloturerId }}</h4>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <input type="text" [(ngModel)]="nouveauPV.titre" placeholder="Titre officiel du Procès-Verbal" style="padding: 6px; width: 350px;">
+        <button (click)="cloturer()" style="padding: 6px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Valider et Archiver le PV</button>
+        <button (click)="reunionACloturerId = null" style="padding: 6px 15px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Annuler</button>
+      </div>
+    </div>
+  }
+
+  <!-- Tableau des Salles et Séances -->
+  <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px;">
+    <thead style="background-color: #f2f2f2;">
+    <tr>
+      <th>ID Séance</th>
+      <th>Ordre du Jour</th>
+      <th>Date & Heure Effective</th>
+      <th>Emplacement / Lien</th>
+      <th>Statut Actuel</th>
+      <th>Document Archivés (PV)</th>
+      <th>Actions Administrative</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (r of reunions; track r.id) {
+        <tr>
+          <td>{{ r.id }}</td>
+          <td><strong>{{ r.ordreDuJour }}</strong></td>
+          <td>{{ r.dateHeure | date:'dd/MM/yyyy à HH:mm' }}</td>
+          <td>{{ r.lieuOuLien }}</td>
+          <td>
+            <span [style.color]="r.statut === 'TERMINEE' ? 'green' : 'orange'" style="font-weight: bold;">
+              {{ r.statut }}
+            </span>
+          </td>
+          <td>
+            @if (r.compteRendu) {
+              <span style="color: #2c3e50; font-weight: 500;">
+                🗂️ Ref: {{ r.compteRendu.referenceArchive }} <br>
+                <small style="color: #6c757d;">({{ r.compteRendu.titre }})</small>
+              </span>
+            } @else {
+              <span style="color: #999; font-style: italic;">En attente de rédaction</span>
+            }
+          </td>
+          <td>
+            @if (r.statut === 'PLANIFIEE') {
+              <button (click)="ouvrirZoneCloture(r.id)" style="padding: 5px 10px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">Rediger le PV</button>
+            } @else {
+              <span style="color: #28a745; font-weight: bold;">✓ Session Close</span>
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" style="text-align: center; color: #999; font-style: italic; padding: 15px;">Aucune réunion ou note de service enregistrée pour le moment.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+

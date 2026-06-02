@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: utilisateur-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_utilisateurs
+    username: postgres
+    password: mon_mot_de_passe
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod: TRACE
+    org.springframework.web.reactive.result.method.annotation.InvocableHandlerMethod: TRACE
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

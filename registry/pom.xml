@@ -6,38 +6,30 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
+        <!-- 3.4.3 est la version stable recommandée pour vos microservices -->
         <version>3.4.3</version>
         <relativePath/>
     </parent>
 
     <groupId>com.universite</groupId>
-    <artifactId>budget-service</artifactId>
+    <artifactId>registry</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>budget-service</name>
+    <name>registry-service</name>
+    <description>Serveur d'enregistrement Eureka</description>
 
     <properties>
         <java.version>17</java.version>
+        <!-- Version Spring Cloud parfaitement synchronisée avec Boot 3.4.x -->
         <spring-cloud.version>2024.0.0</spring-cloud.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+        <!-- 🛑 CORRECTION : Remplacement de client par netflix-eureka-server -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

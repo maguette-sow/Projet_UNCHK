@@ -1,0 +1,54 @@
+<div style="padding: 10px;">
+  <h3 style="color: #2c3e50; border-bottom: 2px solid #e67e22; padding-bottom: 5px; margin-bottom: 20px;">
+    Axe Formations - Saisie des Notes & Bulletins Académiques
+  </h3>
+
+  <!-- Formulaire d'attribution -->
+  <fieldset style="margin-bottom: 25px; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+    <legend style="padding: 0 5px; color: #e67e22;"><strong>Attribuer une Note</strong></legend>
+    <form (ngSubmit)="sauvegarderNote()">
+      <input type="number" [(ngModel)]="noteData.etudiantId" name="etudiantId" placeholder="ID Étudiant" required style="margin-right: 10px; padding: 6px; width: 100px;">
+      <input type="text" [(ngModel)]="noteData.codeMatiere" name="codeMatiere" placeholder="Matière (ex: INF201)" required style="margin-right: 10px; padding: 6px; width: 150px;">
+      <input type="number" step="0.01" [(ngModel)]="noteData.valeurNote" name="valeurNote" placeholder="Note / 20" required style="margin-right: 10px; padding: 6px; width: 90px;">
+      <input type="text" [(ngModel)]="noteData.appreciation" name="appreciation" placeholder="Appréciation" style="margin-right: 10px; padding: 6px; width: 250px;">
+      <button type="submit" style="padding: 6px 15px; background-color: #e67e22; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Enregistrer</button>
+    </form>
+  </fieldset>
+
+  <!-- Consultation Bulletin -->
+  <fieldset style="padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+    <legend style="padding: 0 5px; color: #34495e;"><strong>Consulter le Relevé de Notes</strong></legend>
+    <div style="margin-bottom: 15px;">
+      <input type="number" [(ngModel)]="rechercheId" name="rechercheId" placeholder="Entrez l'ID de l'étudiant" style="margin-right: 10px; padding: 6px; width: 200px;">
+      <button (click)="consulterBulletin()" style="padding: 6px 15px; background-color: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Rechercher</button>
+    </div>
+
+    <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px;">
+      <thead style="background-color: #f2f2f2;">
+      <tr>
+        <th>Code de l'UE</th>
+        <th>Note Attribuée</th>
+        <th>Appréciation de l'Enseignant</th>
+        <th>Date de Validation</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (n of bulletin; track n.id) {
+          <tr>
+            <td><strong>{{ n.codeMatiere }}</strong></td>
+            <td [style.color]="n.valeurNote >= 10 ? 'green' : 'red'"><strong>{{ n.valeurNote }} / 20</strong></td>
+            <td>{{ n.appreciation || 'Aucune mention' }}</td>
+            <td>{{ n.dateSaisie | date:'dd/MM/yyyy' }}</td>
+          </tr>
+        } @empty {
+          @if (rechercheId !== null) {
+            <tr>
+              <td colspan="4" style="text-align: center; color: #999; font-style: italic; padding: 15px;">Aucune note enregistrée pour cet étudiant.</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </fieldset>
+</div>
+
