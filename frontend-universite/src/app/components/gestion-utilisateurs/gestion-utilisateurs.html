@@ -17,7 +17,7 @@
         <option value="ETUDIANT">Étudiant</option>
       </select>
 
-      <button type="submit" style="padding: 6px 12px; background-color: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer;">Enregistrer</button>
+      <button type="submit" [disabled]="!nouvelUtilisateur.nom || !nouvelUtilisateur.prenom || !nouvelUtilisateur.email || !nouvelUtilisateur.motDePasse" style="padding: 6px 12px; background-color: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer;">Enregistrer</button>
     </form>
   </fieldset>
 

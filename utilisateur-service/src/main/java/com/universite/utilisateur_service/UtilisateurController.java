@@ -4,12 +4,9 @@ package com.universite.utilisateur_service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/utilisateurs")
-// DIP/OCP : Prépare la communication avec Angular sans bloquer les requêtes (CORS)
-@CrossOrigin(origins = "http://localhost:4200")
 public class UtilisateurController {
 
     private final UtilisateurService service;
@@ -39,9 +36,16 @@ public class UtilisateurController {
      * Récupérer la liste complète
      */
     @GetMapping
-    public ResponseEntity<List<Utilisateur>> listerTout() {
-        return ResponseEntity.ok(service.recupererTousLesUtilisateurs());
+    public ResponseEntity<?> listerTousLesUtilisateurs() {
+        try {
+            return ResponseEntity.ok(service.recupererTousLesUtilisateurs());
+        } catch (Exception e) {
+            // 🌟 Empêche l'erreur 500 et renvoie un tableau vide avec un avertissement propre
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur interne lors de la lecture des profils : " + e.getMessage());
+        }
     }
+
 
     /**
      * GET http://localhost:8081/api/utilisateurs/{id}

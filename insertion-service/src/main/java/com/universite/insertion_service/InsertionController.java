@@ -8,7 +8,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/insertion")
-@CrossOrigin(origins = "http://localhost:4200")
 public class InsertionController {
 
     private final InsertionService service;

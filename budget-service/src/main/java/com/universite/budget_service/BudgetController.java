@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/budget")
-@CrossOrigin(origins = "http://localhost:4200")
 public class BudgetController {
 
     private final BudgetService service;
@@ -17,10 +16,17 @@ public class BudgetController {
         this.service = service;
     }
 
-    @PostMapping
-    public ResponseEntity<Budget> initialiser(@RequestBody Budget budget) {
-        return new ResponseEntity<>(service.allouerBudget(budget), HttpStatus.CREATED);
+    @PostMapping({"", "/"})
+    public ResponseEntity<?> initialiser(@RequestBody Budget budget) {
+        try {
+            return new ResponseEntity<>(service.allouerBudget(budget), HttpStatus.CREATED);
+        } catch (Exception e) {
+            // 🌟 Capture le message exact (ex: contrainte de clé, champ null...) et le renvoie à Angular
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur base de données : " + e.getMessage());
+        }
     }
+
 
     @PutMapping("/{annee}/depenser")
     public ResponseEntity<?> depenser(@PathVariable Integer annee, @RequestParam BigDecimal montant) {
@@ -28,6 +34,9 @@ public class BudgetController {
             return ResponseEntity.ok(service.enregistrerDepense(annee, montant));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (RuntimeException e) {
+            // 🌟 Évite l'erreur 500 globale et renvoie un message propre à Angular
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur : Aucun budget initial alloué pour l'année " + annee);
         }
     }
 }

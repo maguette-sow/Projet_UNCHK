@@ -8,7 +8,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/communication")
-@CrossOrigin(origins = "http://localhost:4200") // Connexion Angular
 public class CommunicationController {
 
     private final CommunicationService service;
