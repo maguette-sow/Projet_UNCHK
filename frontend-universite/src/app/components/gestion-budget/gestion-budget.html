@@ -35,5 +35,60 @@
       </form>
     </fieldset>
   </div>
-</div>
 
+  <hr style="margin: 40px 0; border: 1px dashed #ccc;">
+
+  <!-- 🌟 EXTENSION ATTACHÉE : SECTION COURRIERS & CIRCULAIRES (MODULE 2) -->
+  <div>
+    <h3 style="color: #2c3e50; border-bottom: 2px solid #34495e; padding-bottom: 5px; margin-bottom: 20px;">
+      Bureau du Courrier, Circulaires & Notes de Service Internes
+    </h3>
+
+    <!-- Saisie Documentaire -->
+    <fieldset style="margin-bottom: 25px; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+      <legend style="color: #34495e; padding: 0 5px;"><strong>Consigner une Pièce Administrative</strong></legend>
+      <form (ngSubmit)="enregistrerCourrier()">
+        <select [(ngModel)]="courrier.type" name="type" style="padding: 6px; margin-right: 10px; cursor: pointer;">
+          <option value="ARRIVE">📥 Courrier Arrivé</option>
+          <option value="DEPART">🚀 Courrier Départ</option>
+          <option value="NOTE_INTERNE">📄 Note de Service Interne</option>
+        </select>
+
+        <input type="text" [(ngModel)]="courrier.objet" name="objet" placeholder="Objet de la correspondance" required style="padding: 6px; width: 300px; margin-right: 10px;">
+        <input type="text" [(ngModel)]="courrier.expediteurDestinataire" name="correspondant" placeholder="Expéditeur / Destinataire" required style="padding: 6px; width: 250px; margin-right: 10px;">
+
+        <button type="submit" [disabled]="!courrier.objet || !courrier.expediteurDestinataire" style="padding: 6px 15px; background-color: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+          Enregistrer le Document
+        </button>
+      </form>
+    </fieldset>
+
+    <!-- Registre d'Affichage Dynamique (Syntaxe native @for d'Angular 19+) -->
+    <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px;">
+      <thead style="background-color: #f2f2f2;">
+      <tr>
+        <th>Réf. Archive</th>
+        <th>Nature du Document</th>
+        <th>Objet Administratif</th>
+        <th>Correspondant Relatif</th>
+        <th>Date de Saisie</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (doc of registreDocuments; track doc.id) {
+          <tr>
+            <td><code>{{ doc.ref }}</code></td>
+            <td><span style="font-weight: 600;">{{ doc.type }}</span></td>
+            <td>{{ doc.objet }}</td>
+            <td>{{ doc.correspondant }}</td>
+            <td>{{ doc.date }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" style="text-align: center; color: #999; font-style: italic; padding: 15px;">Aucun document consigné dans le registre.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

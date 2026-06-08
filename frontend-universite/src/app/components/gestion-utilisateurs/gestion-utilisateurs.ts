@@ -17,11 +17,9 @@ export class GestionUtilisateursComponent implements OnInit {
 
   // Modèle pour le formulaire d'ajout
   nouvelUtilisateur = {
-    nom: '',
-    prenom: '',
-    email: '',
-    motDePasse: '',
-    role: 'ETUDIANT' // Rôle par défaut
+    nom: '', prenom: '', email: '', motDePasse: '', role: 'ETUDIANT',
+    ine: '', dateNaissance: '', formation: 'Ingénierie Logicielle', promo: 'Promo 8', anneeDebut: 2025, anneeSortie: 2026,
+    diplomesObtenus: '', autresFormations: ''
   };
 
   // DIP : Injection du service métier
@@ -44,7 +42,8 @@ export class GestionUtilisateursComponent implements OnInit {
       next: () => {
         alert('Utilisateur créé avec succès !');
         this.chargerUtilisateurs(); // Rafraîchit le tableau automatiquement
-        this.nouvelUtilisateur = { nom: '', prenom: '', email: '', motDePasse: '', role: 'ETUDIANT' }; // Reset
+        this.nouvelUtilisateur = { nom: '', prenom: '', email: '', motDePasse: '', role: 'ETUDIANT',
+          ine: '', dateNaissance: '', formation: 'Ingénierie Logicielle', promo: 'Promo 8', anneeDebut: 2025, anneeSortie: 2026, diplomesObtenus: '', autresFormations: '' }; // Reset
       },
       error: (err) => alert('Erreur : ' + err.error)
     });

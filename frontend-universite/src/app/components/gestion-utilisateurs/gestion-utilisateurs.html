@@ -1,52 +1,112 @@
 <div style="padding: 20px; font-family: Arial, sans-serif;">
-  <h2>Administration - Gestion des Utilisateurs</h2>
+  <h2>Administration - Gestion des Utilisateurs & Dossiers Étudiants</h2>
 
   <!-- Formulaire d'inscription -->
-  <fieldset style="margin-bottom: 20px; padding: 15px; border-radius: 5px; border: 1px solid #ccc;">
-    <legend><strong>Créer un nouveau compte</strong></legend>
+  <fieldset style="margin-bottom: 20px; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+    <legend><strong>Créer un nouveau compte universitaire</strong></legend>
     <form (ngSubmit)="ajouterUtilisateur()">
-      <input type="text" [(ngModel)]="nouvelUtilisateur.nom" name="nom" placeholder="Nom" required style="margin-right: 10px; padding: 5px;">
-      <input type="text" [(ngModel)]="nouvelUtilisateur.prenom" name="prenom" placeholder="Prénom" required style="margin-right: 10px; padding: 5px;">
-      <input type="email" [(ngModel)]="nouvelUtilisateur.email" name="email" placeholder="Email" required style="margin-right: 10px; padding: 5px;">
-      <input type="password" [(ngModel)]="nouvelUtilisateur.motDePasse" name="motDePasse" placeholder="Mot de passe" required style="margin-right: 10px; padding: 5px;">
 
-      <select [(ngModel)]="nouvelUtilisateur.role" name="role" style="margin-right: 10px; padding: 5px;">
-        <option value="ADMIN">Administrateur</option>
-        <option value="ADMINISTRATIF">Personnel Administratif</option>
-        <option value="ENSEIGNANT">Enseignant</option>
-        <option value="ETUDIANT">Étudiant</option>
-      </select>
+      <!-- Bloc Identité Générique -->
+      <div style="margin-bottom: 12px;">
+        <input type="text" [(ngModel)]="nouvelUtilisateur.nom" name="nom" placeholder="Nom" required style="margin-right: 10px; padding: 5px;">
+        <input type="text" [(ngModel)]="nouvelUtilisateur.prenom" name="prenom" placeholder="Prénom" required style="margin-right: 10px; padding: 5px;">
+        <input type="email" [(ngModel)]="nouvelUtilisateur.email" name="email" placeholder="Email" required style="margin-right: 10px; padding: 5px;">
+        <input type="password" [(ngModel)]="nouvelUtilisateur.motDePasse" name="motDePasse" placeholder="Mot de passe" required style="margin-right: 10px; padding: 5px;">
 
-      <button type="submit" [disabled]="!nouvelUtilisateur.nom || !nouvelUtilisateur.prenom || !nouvelUtilisateur.email || !nouvelUtilisateur.motDePasse" style="padding: 6px 12px; background-color: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer;">Enregistrer</button>
+        <select [(ngModel)]="nouvelUtilisateur.role" name="role" style="margin-right: 10px; padding: 5px; cursor: pointer;">
+          <option value="ADMIN">Administrateur</option>
+          <option value="ADMINISTRATIF">Personnel Administratif</option>
+          <option value="ENSEIGNANT">Enseignant / Tuteur</option>
+          <option value="ETUDIANT">Étudiant</option>
+        </select>
+      </div>
+
+      <!-- 🌟 Bloc Académique Conditionnel (Masqué automatiquement si ce n'est pas un étudiant) -->
+      @if (nouvelUtilisateur.role === 'ETUDIANT') {
+        <div style="margin-bottom: 12px; padding: 10px; background-color: #f4fbf7; border-left: 3px solid #28a745; border-radius: 4px;">
+          <input type="text" [(ngModel)]="nouvelUtilisateur.ine" name="ine" placeholder="Numéro INE Obligatoire" required style="margin-right: 10px; padding: 5px;">
+
+          <label style="font-size: 13px; margin-right: 5px;">Date de naissance :</label>
+          <input type="date" [(ngModel)]="nouvelUtilisateur.dateNaissance" name="naissance" required style="margin-right: 10px; padding: 4px;">
+
+          <input type="text" [(ngModel)]="nouvelUtilisateur.formation" name="form" placeholder="Filière (ex: Ingénierie Logicielle)" required style="margin-right: 10px; padding: 5px; width: 180px;">
+          <input type="text" [(ngModel)]="nouvelUtilisateur.promo" name="prm" placeholder="Promo (ex: Promo 8)" required style="margin-right: 10px; padding: 5px; width: 100px;">
+          <input type="number" [(ngModel)]="nouvelUtilisateur.anneeDebut" name="debut" placeholder="Année Début" required style="margin-right: 10px; padding: 5px; width: 100px;">
+          <input type="number" [(ngModel)]="nouvelUtilisateur.anneeSortie" name="sortie" placeholder="Année Sortie" required style="margin-right: 10px; padding: 5px; width: 100px;">
+        </div>
+
+        <!-- 🌟 Bloc Cursus Antérieur & Certifications annexes -->
+        <div style="margin-bottom: 15px; padding: 10px; background-color: #f4fbf7; border-left: 3px solid #28a745; border-radius: 4px; display: flex; gap: 15px;">
+          <div style="flex: 1;">
+            <label style="display:block; font-size:12px; margin-bottom:3px; color:#555;">Diplômes obtenus :</label>
+            <input type="text" [(ngModel)]="nouvelUtilisateur.diplomesObtenus" name="diplo" placeholder="Ex: Bac S2, Licence Math-Info" required style="width: 95%; padding: 5px;">
+          </div>
+          <div style="flex: 1;">
+            <label style="display:block; font-size:12px; margin-bottom:3px; color:#555;">Autres formations / Certifications :</label>
+            <input type="text" [(ngModel)]="nouvelUtilisateur.autresFormations" name="autresF" placeholder="Ex: Certification Python, Cisco CCNA" required style="width: 95%; padding: 5px;">
+          </div>
+        </div>
+      }
+
+      <!-- Bouton de soumission sécurisé -->
+      <button type="submit"
+              [disabled]="!nouvelUtilisateur.nom || !nouvelUtilisateur.prenom || !nouvelUtilisateur.email || !nouvelUtilisateur.motDePasse || (nouvelUtilisateur.role === 'ETUDIANT' && (!nouvelUtilisateur.ine || !nouvelUtilisateur.dateNaissance || !nouvelUtilisateur.formation || !nouvelUtilisateur.diplomesObtenus || !nouvelUtilisateur.autresFormations))"
+              style="padding: 6px 12px; background-color: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: bold;">
+        Enregistrer le Profil
+      </button>
     </form>
   </fieldset>
 
-  <!-- Tableau des comptes existants -->
-  <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left;">
+  <!-- Tableau étendu des dossiers universitaires -->
+  <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
     <thead style="background-color: #f2f2f2;">
     <tr>
-      <th>ID</th>
-      <th>Nom</th>
-      <th>Prénom</th>
-      <th>Email</th>
+      <th>ID Système</th>
+      <th>N° INE</th>
+      <th>Nom & Prénom</th>
+      <th>E-mail</th>
+      <th>Cursus & Promotion</th>
+      <th>Diplômes & Certifications</th>
       <th>Rôle</th>
       <th>Statut</th>
     </tr>
     </thead>
     <tbody>
-    <!-- 🌟 Nouvelle syntaxe officielle Angular 19 (Plus aucun avertissement) -->
       @for (user of utilisateurs; track user.id) {
         <tr>
-          <td>{{ user.id }}</td>
-          <td>{{ user.nom }}</td>
-          <td>{{ user.prenom }}</td>
-          <td>{{ user.email }}</td>
+          <td><code>#{{ user.id }}</code></td>
+          <!-- 💡 Sécurité : On s'assure d'afficher l'INE de manière brute ou N/A si absent -->
+          <td><strong>{{ user.ine ? user.ine : 'En attente' }}</strong></td>
+          <td>{{ user.nom | uppercase }} {{ user.prenom }}</td>
+          <td><code>{{ user.email }}</code></td>
+          <td>
+            @if (user.role === 'ETUDIANT') {
+              <span>{{ user.formation || 'Ingénierie Logicielle' }} ({{ user.promo || 'Promo 8' }})<br>
+              <small style="color: #6c757d;">Cursus: {{ user.anneeDebut }} - {{ user.anneeSortie }}</small></span>
+            } @else {
+              <span style="color: #999; font-style: italic;">Dossier Personnel RH</span>
+            }
+          </td>
+          <!-- 💡 Correction du texte d'affichage pour éviter les bugs visuels d'icônes -->
+          <td>
+            @if (user.role === 'ETUDIANT') {
+              <span style="font-size:13px; display: block;">
+                🎓 {{ user.diplomesObtenus || 'Non renseigné' }}
+              </span>
+              <span style="font-size:13px; display: block; margin-top: 4px;">
+                📜 {{ user.autresFormations || 'Aucune certification' }}
+              </span>
+            } @else {
+              <span style="color: #999;">N/A</span>
+            }
+          </td>
           <td><span style="font-weight: bold;">{{ user.role }}</span></td>
           <td>{{ user.statutCompte ? 'Actif' : 'Inactif' }}</td>
         </tr>
+
       } @empty {
         <tr>
-          <td colspan="6" style="text-align: center; color: #999; font-style: italic;">Aucun utilisateur trouvé</td>
+          <td colspan="8" style="text-align: center; color: #999; font-style: italic; padding: 15px;">Aucun utilisateur trouvé</td>
         </tr>
       }
     </tbody>

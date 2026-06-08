@@ -1,46 +1,52 @@
 <div style="padding: 10px;">
   <h3 style="color: #2c3e50; border-bottom: 2px solid #138d75; padding-bottom: 5px; margin-bottom: 20px;">
-    Axe Étudiant - Observatoire de l'Insertion Professionnelle & Suivi des Diplômés
+    Module 3 - Appui à l'Insertion Professionnelle & Observatoire des Diplômés
   </h3>
 
-  <!-- Enregistrement Situation -->
+  <!-- SECTION 1 : INSERTION PROFESSIONNELLE -->
   <fieldset style="margin-bottom: 25px; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
-    <legend style="color: #138d75; padding: 0 5px;"><strong>Déclarer le Parcours d'un Alumnus</strong></legend>
+    <legend style="color: #138d75; padding: 0 5px;"><strong>Déclarer le Parcours d'un Alumnus (Emploi & Auto-Emploi)</strong></legend>
     <form (ngSubmit)="enregistrerSuivi()">
       <input type="number" [(ngModel)]="insertion.etudiantId" name="id" placeholder="ID Diplômé" required style="margin-right: 10px; padding: 6px; width: 110px;">
 
-      <select [(ngModel)]="insertion.statutActuel" name="statut" style="margin-right: 10px; padding: 6px;">
-        <option value="EN_POSTE">En Poste / Salarié</option>
-        <option value="EN_RECHERCHE">En Recherche d'Emploi</option>
-        <option value="POURSUITE_ETUDES">Poursuite d'Études (Master/Doctorat)</option>
+      <!-- Option AUTO_EMPLOI ajoutée conformément au cahier des charges -->
+      <select [(ngModel)]="insertion.statutActuel" name="statut" style="margin-right: 10px; padding: 6px; cursor: pointer;">
+        <option value="EN_POSTE">💼 En Poste / Salarié</option>
+        <option value="AUTO_EMPLOI">🚀 Auto-Emploi / Entrepreneuriat</option>
+        <option value="EN_RECHERCHE">🔍 En Recherche d'Emploi</option>
+        <option value="POURSUITE_ETUDES">📚 Poursuite d'Études</option>
       </select>
 
-      <input type="text" [(ngModel)]="insertion.intitulePoste" name="poste" placeholder="Intitulé du Poste" style="margin-right: 10px; padding: 6px; width: 180px;">
-      <input type="text" [(ngModel)]="insertion.entreprise" name="ent" placeholder="Entreprise / Cabinet" style="margin-right: 10px; padding: 6px; width: 180px;">
+      <input type="text" [(ngModel)]="insertion.intitulePoste" name="poste" placeholder="Poste ou Projet créé" style="margin-right: 10px; padding: 6px; width: 180px;">
+      <input type="text" [(ngModel)]="insertion.entreprise" name="ent" placeholder="Entreprise / Start-up" style="margin-right: 10px; padding: 6px; width: 180px;">
 
-      <button type="submit" style="padding: 6px 15px; background-color: #138d75; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Valider la Situation</button>
+      <button type="submit" style="padding: 6px 15px; background-color: #138d75; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Enregistrer la Situation</button>
     </form>
   </fieldset>
 
-  <!-- Statistiques -->
-  <fieldset style="padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
-    <legend style="color: #34495e; padding: 0 5px;"><strong>Indicateurs Majeurs d'Insertion (Module 5)</strong></legend>
+  <!-- SECTION 2 : STATISTIQUES & EXPORT PDF -->
+  <fieldset style="margin-bottom: 25px; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+    <legend style="color: #34495e; padding: 0 5px;"><strong>Statistiques & Rapports des Sortants</strong></legend>
     <div style="margin-bottom: 15px;">
-      <select [(ngModel)]="filtreStatut" name="filtre" style="margin-right: 10px; padding: 6px;">
-        <option value="EN_POSTE">Lister les diplômés en activité</option>
-        <option value="EN_RECHERCHE">Lister les diplômés en recherche d'emploi</option>
-        <option value="POURSUITE_ETUDES">Lister les diplômés en reprise d'études</option>
+      <select [(ngModel)]="filtreStatut" name="filtre" style="margin-right: 10px; padding: 6px; cursor: pointer;">
+        <option value="EN_POSTE">Lister les diplômés en activité salariée</option>
+        <option value="AUTO_EMPLOI">Lister les sortants vers l'auto-emploi</option>
+        <option value="EN_RECHERCHE">Lister les sortants en recherche</option>
       </select>
-      <button (click)="chargerStatistiques()" style="padding: 6px 15px; background-color: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Générer l'Analyse</button>
+      <button (click)="chargerStatistiques()" style="padding: 6px 15px; background-color: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 10px;">Générer l'Analyse</button>
+
+      @if (diplomes.length > 0) {
+        <button (click)="exporterPDF()" style="padding: 6px 15px; background-color: #cb4335; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">📥 Télécharger le Rapport (PDF)</button>
+      }
     </div>
 
-    <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px;">
+    <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left;">
       <thead style="background-color: #f2f2f2;">
       <tr>
         <th>Référence Diplômé</th>
-        <th>Structure d'Accueil</th>
-        <th>Fonction Exercée</th>
-        <th>Date de Recrutement / Statut</th>
+        <th>Structure / Entreprise</th>
+        <th>Fonction / Projet Occupé</th>
+        <th>Date de Suivi</th>
       </tr>
       </thead>
       <tbody>
@@ -53,11 +59,76 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="4" style="text-align: center; color: #999; font-style: italic; padding: 15px;">Aucun indicateur disponible. Lancez une analyse pour ce statut.</td>
+            <td colspan="4" style="text-align: center; color: #999; font-style: italic; padding: 10px;">Aucune donnée disponible pour ce filtre.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </fieldset>
+
+  <!-- 🌟 NOUVEAU : SECTION 3 : REGISTRE DE CONTACT & BILAN DE STAGES -->
+  <fieldset style="margin-bottom: 25px; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+    <legend style="color: #2e4053; padding: 0 5px;"><strong>Suivi des Étudiants : Registre de Contact & Bilan de Stages</strong></legend>
+    <form (ngSubmit)="ajouterContactStage()" style="margin-bottom: 15px;">
+      <input type="number" [(ngModel)]="suiviStage.etudiantId" name="stgId" placeholder="ID Étudiant" required style="padding: 6px; width: 100px; margin-right: 10px;">
+      <input type="text" [(ngModel)]="suiviStage.telephone" name="stgTel" placeholder="Registre Contact (Tél)" required style="padding: 6px; width: 150px; margin-right: 10px;">
+      <input type="text" [(ngModel)]="suiviStage.entrepriseStage" name="stgEnt" placeholder="Entreprise d'accueil" required style="padding: 6px; width: 180px; margin-right: 10px;">
+      <input type="number" [(ngModel)]="suiviStage.noteStage" name="stgNote" placeholder="Note /20" required style="padding: 6px; width: 80px; margin-right: 10px;">
+
+      <select [(ngModel)]="suiviStage.bilan" name="stgBilan" style="padding: 6px; margin-right: 10px; cursor: pointer;">
+        <option value="TRES_BIEN">Bilan : Très Satisfaisant</option>
+        <option value="PASSE">Bilan : Passable</option>
+      </select>
+
+      <button type="submit" [disabled]="!suiviStage.etudiantId || !suiviStage.entrepriseStage" style="padding: 6px 15px; background-color: #2e4053; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Consigner Bilan</button>
+    </form>
+
+    <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead style="background-color: #f2f2f2;">
+      <tr>
+        <th>ID Étudiant</th>
+        <th>Contact Téléphonique</th>
+        <th>Lieu de Stage</th>
+        <th>Note Évaluation</th>
+        <th>Bilan de Stage</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (stg of registreContactsStages; track stg.id) {
+          <tr>
+            <td>Étudiant #{{ stg.etudiantId }}</td>
+            <td><code>{{ stg.telephone }}</code></td>
+            <td>{{ stg.entrepriseStage }}</td>
+            <td><span style="font-weight: bold; color: green;">{{ stg.noteStage }}/20</span></td>
+            <td><em>{{ stg.bilan }}</em></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </fieldset>
+
+  <!-- 🌟 NOUVEAU : SECTION 4 : GESTION DES PARTENAIRES -->
+  <fieldset style="padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
+    <legend style="color: #117a65; padding: 0 5px;"><strong>Gestion des Partenaires & Base de Données des Conventions</strong></legend>
+    <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px;">
+      <thead style="background-color: #f2f2f2;">
+      <tr>
+        <th>Structure Partenaire</th>
+        <th>Type de Convention Signée</th>
+        <th>Filières Universitaires Concernées</th>
+        <th>Statut de l'Accord</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (p of partenaires; track p.id) {
+          <tr>
+            <td><strong>{{ p.structure }}</strong></td>
+            <td>{{ p.convention }}</td>
+            <td>{{ p.filiere }}</td>
+            <td><span style="color: green; font-weight: bold;">✓ {{ p.statut }}</span></td>
           </tr>
         }
       </tbody>
     </table>
   </fieldset>
 </div>
-
