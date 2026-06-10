@@ -149,23 +149,30 @@
     </fieldset>
 
     <!-- 4. REGISTRE DES REUNIONS PEDAGOGIQUES EXIGEES -->
-    <!-- 1. BLOC RÉUNIONS DE SUIVI (Isolé et Sécurisé) -->
     <fieldset style="flex:1; padding:15px; border-radius:5px; border:1px solid #ccc; background-color:#fdfefe;">
       <legend style="color:#7d6608; font-weight:bold; padding:0 5px;"><strong>📅 Réunions de Suivi Pédagogique & Évaluations</strong></legend>
 
-      <form (ngSubmit)="consignerReunionPedago()" style="margin-bottom:12px;">
-        <select [(ngModel)]="nouvelleReunionPedago.typeObj" name="reunType" style="padding:6px; margin-right:5px; cursor:pointer;">
-          <option value="SUIVI_TUTORAT">Réunion liée au suivi tutorat</option>
-          <option value="PREPA_COURS">Réunion liée à la préparation des cours</option>
-          <option value="PREPA_EVAL">Réunion liée à la préparation des évaluations</option>
-        </select>
-        <input type="text" [(ngModel)]="nouvelleReunionPedago.date" name="reunDate" placeholder="Date (JJ/MM/AAAA)" required style="padding:6px; width:110px; margin-right:5px;">
-        <!-- 💡 Correction : Liaison réalignée sur l'attribut 'description' du fichier TypeScript -->
-        <input type="text" [(ngModel)]="nouvelleReunionPedago.description" name="reunDesc" placeholder="Synthèse de la séance" required style="padding:6px; width:140px;">
-        <button type="submit" style="padding:6px 12px; background-color:#7d6608; color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer; margin-left:5px;">Consigner</button>
+      <form (ngSubmit)="consignerReunionPedago()" style="margin-bottom:15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div style="grid-column: span 2;">
+          <select [(ngModel)]="nouvelleReunionPedago.typeObj" name="reunType" style="padding:6px; width: 100%; cursor:pointer;">
+            <option value="SUIVI_TUTORAT">Réunion liée au suivi tutorat</option>
+            <option value="PREPA_COURS">Réunion liée à la préparation des cours</option>
+            <option value="PREPA_EVAL">Réunion liée à la préparation des évaluations</option>
+          </select>
+        </div>
+        <div>
+          <input type="text" [(ngModel)]="nouvelleReunionPedago.date" name="reunDate" placeholder="Date (JJ/MM/AAAA)" required style="padding:6px; width:90%;">
+        </div>
+        <div>
+          <input type="text" [(ngModel)]="nouvelleReunionPedago.description" name="reunDesc" placeholder="Synthèse de la séance" required style="padding:6px; width:90%;">
+        </div>
+        <div style="grid-column: span 2; text-align: right;">
+          <button type="submit" [disabled]="!nouvelleReunionPedago.date || !nouvelleReunionPedago.description" style="padding:6px 20px; background-color:#7d6608; color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">
+            Consigner la Séance
+          </button>
+        </div>
       </form>
 
-      <!-- TABLEAU DES REUNIONS -->
       <table border="1" cellpadding="6" style="width:100%; border-collapse:collapse; font-size:13px; text-align: left;">
         <thead>
         <tr style="background-color:#f2f2f2;">
@@ -177,7 +184,6 @@
         <tbody>
           @for (r of reunionsPedagogiques; track r.id) {
             <tr>
-              <!-- 💡 Correction : Affichage réaligné sur la variable textuelle 'type' -->
               <td><strong>{{ r.type }}</strong></td>
               <td><code>{{ r.date }}</code></td>
               <td>{{ r.desc }}</td>
@@ -186,6 +192,7 @@
         </tbody>
       </table>
     </fieldset>
+
 
 
     <!-- 2. BLOC DES EVALUATIONS (SAISIE & RELEVÉ DYNAMIQUE) -->

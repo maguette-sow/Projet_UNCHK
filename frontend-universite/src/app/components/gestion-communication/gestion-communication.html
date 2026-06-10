@@ -3,16 +3,21 @@
     Axe Communication - Dématérialisation Administrative & Suivi des Conseils
   </h3>
 
-  <!-- Formulaire de Planification -->
+  <!-- Formulaire de Planification Réaligné (Module 1) -->
   <fieldset style="margin-bottom: 25px; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background-color: #fdfefe;">
-    <legend style="padding: 0 5px; color: #007bff;"><strong>Planifier une Réunion / un Conseil</strong></legend>
-    <form (ngSubmit)="planifier()">
-      <input type="text" [(ngModel)]="nouvelleReunion.ordreDuJour" name="ordre" placeholder="Ordre du jour" required style="margin-right: 10px; padding: 6px; width: 300px;">
-      <input type="datetime-local" [(ngModel)]="nouvelleReunion.dateHeure" name="date" required style="margin-right: 10px; padding: 6px;">
-      <input type="text" [(ngModel)]="nouvelleReunion.lieuOuLien" name="lieu" placeholder="Salle physique ou Lien Visio" required style="margin-right: 10px; padding: 6px; width: 200px;">
-      <button type="submit" style="padding: 6px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Planifier</button>
+    <legend style="padding: 0 5px; color: #007bff; font-weight: bold;"><strong>Planifier une Réunion / un Conseil</strong></legend>
+    <form (ngSubmit)="planifier()" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <input type="text" [(ngModel)]="nouvelleReunion.ordreDuJour" name="ordre" placeholder="Ordre du jour" required style="padding: 6px; width: 280px; border: 1px solid #ccc; border-radius: 4px;">
+      <input type="datetime-local" [(ngModel)]="nouvelleReunion.dateHeure" name="date" required style="padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+      <input type="text" [(ngModel)]="nouvelleReunion.lieuOuLien" name="lieu" placeholder="Salle physique ou Lien Visio" required style="padding: 6px; width: 220px; border: 1px solid #ccc; border-radius: 4px;">
+
+      <!-- 💡 Correction du libellé pour afficher un bouton d'action professionnel -->
+      <button type="submit" [disabled]="!nouvelleReunion.ordreDuJour || !nouvelleReunion.dateHeure || !nouvelleReunion.lieuOuLien" style="padding: 6px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+        Planifier la Séance
+      </button>
     </form>
   </fieldset>
+
 
   <!-- Zone de rédaction dynamique du PV (s'affiche uniquement si on clique sur clôturer) -->
   @if (reunionACloturerId !== null) {
