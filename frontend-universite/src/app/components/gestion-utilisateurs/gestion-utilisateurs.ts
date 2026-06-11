@@ -25,7 +25,7 @@ export class GestionUtilisateursComponent implements OnInit {
   // DIP : Injection du service métier
   constructor(private utilisateurService: UtilisateurService) {}
 
-  // 💡 CORRECTION ICI : Le type de retour doit être void
+  //  Le type de retour doit être void
   ngOnInit(): void {
     this.chargerUtilisateurs();
   }

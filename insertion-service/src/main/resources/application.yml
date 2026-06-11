@@ -15,7 +15,7 @@ spring:
 
 eureka:
   instance:
-    # AJOUT CRUCIAL : Force l'utilisation de l'IP pour l'enregistrement Eureka
+    #  Force l'utilisation de l'IP pour l'enregistrement Eureka
     prefer-ip-address: true
   client:
     service-url:

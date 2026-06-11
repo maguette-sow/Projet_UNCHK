@@ -20,7 +20,7 @@ logging:
 
 eureka:
   instance:
-    # AJOUT CRUCIAL : Résout le gel du démarrage lié à la résolution du hostname Windows
+    # Résout le gel du démarrage lié à la résolution du hostname Windows
     prefer-ip-address: true
   client:
     service-url:

@@ -78,3 +78,6 @@ export class GestionBudgetComponent implements OnInit {
     });
   }
 }
+
+export class GestionBudget {
+}

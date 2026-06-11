@@ -40,7 +40,7 @@ public class UtilisateurController {
         try {
             return ResponseEntity.ok(service.recupererTousLesUtilisateurs());
         } catch (Exception e) {
-            // 🌟 Empêche l'erreur 500 et renvoie un tableau vide avec un avertissement propre
+            // Empêche l'erreur 500 et renvoie un tableau vide avec un avertissement propre
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erreur interne lors de la lecture des profils : " + e.getMessage());
         }

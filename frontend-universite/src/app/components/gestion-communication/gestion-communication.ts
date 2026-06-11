@@ -61,3 +61,6 @@ export class GestionCommunicationComponent implements OnInit {
     }
   }
 }
+
+export class GestionCommunication {
+}

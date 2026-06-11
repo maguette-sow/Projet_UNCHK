@@ -8,13 +8,13 @@ spring:
     compatibility-verifier:
       enabled: false
     gateway:
-      # 🌟 SOLUTION PRO : Découverte 100% automatique via l'annuaire Eureka
+      # Découverte 100% automatique via l'annuaire Eureka
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true # Permet d'appeler /utilisateur-service/ ou /budget-service/
 
-      # 🌟 Nettoyage des en-têtes CORS sans altérer la structure des routes HTTP
+      # Nettoyage des en-têtes CORS sans altérer la structure des routes HTTP
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials RETAIN_FIRST
 

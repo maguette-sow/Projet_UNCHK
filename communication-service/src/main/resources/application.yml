@@ -15,7 +15,7 @@ spring:
 
 eureka:
   instance:
-    # AJOUT CRUCIAL : Force l'enregistrement par IP pour éviter le blocage Windows
+    # Force l'enregistrement par IP pour éviter le blocage Windows
     prefer-ip-address: true
   client:
     service-url:

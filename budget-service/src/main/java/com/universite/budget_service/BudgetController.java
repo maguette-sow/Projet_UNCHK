@@ -21,7 +21,7 @@ public class BudgetController {
         try {
             return new ResponseEntity<>(service.allouerBudget(budget), HttpStatus.CREATED);
         } catch (Exception e) {
-            // 🌟 Capture le message exact (ex: contrainte de clé, champ null...) et le renvoie à Angular
+            //  Capture le message exact (ex: contrainte de clé, champ null...) et le renvoie à Angular
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erreur base de données : " + e.getMessage());
         }

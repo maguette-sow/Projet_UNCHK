@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UtilisateurService {
 
-  // 🛑 ATTENTION : On attaque UNIQUEMENT le port 8080 de la Gateway
+  //  On attaque UNIQUEMENT le port 8080 de la Gateway
   // La gateway se charge de rediriger vers le microservice utilisateur (port 8081)
   private gatewayUrl = 'http://localhost:8080/utilisateur-service/api/utilisateurs';
 

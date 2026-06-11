@@ -21,7 +21,7 @@
         </select>
       </div>
 
-      <!-- 🌟 Bloc Académique Conditionnel (Masqué automatiquement si ce n'est pas un étudiant) -->
+      <!-- Bloc Académique Conditionnel (Masqué automatiquement si ce n'est pas un étudiant) -->
       @if (nouvelUtilisateur.role === 'ETUDIANT') {
         <div style="margin-bottom: 12px; padding: 10px; background-color: #f4fbf7; border-left: 3px solid #28a745; border-radius: 4px;">
           <input type="text" [(ngModel)]="nouvelUtilisateur.ine" name="ine" placeholder="Numéro INE Obligatoire" required style="margin-right: 10px; padding: 5px;">
@@ -35,7 +35,7 @@
           <input type="number" [(ngModel)]="nouvelUtilisateur.anneeSortie" name="sortie" placeholder="Année Sortie" required style="margin-right: 10px; padding: 5px; width: 100px;">
         </div>
 
-        <!-- 🌟 Bloc Cursus Antérieur & Certifications annexes -->
+        <!-- Bloc Cursus Antérieur & Certifications annexes -->
         <div style="margin-bottom: 15px; padding: 10px; background-color: #f4fbf7; border-left: 3px solid #28a745; border-radius: 4px; display: flex; gap: 15px;">
           <div style="flex: 1;">
             <label style="display:block; font-size:12px; margin-bottom:3px; color:#555;">Diplômes obtenus :</label>
@@ -75,7 +75,7 @@
       @for (user of utilisateurs; track user.id) {
         <tr>
           <td><code>#{{ user.id }}</code></td>
-          <!-- 💡 Sécurité : On s'assure d'afficher l'INE de manière brute ou N/A si absent -->
+          <!--  Sécurité : On s'assure d'afficher l'INE de manière brute ou N/A si absent -->
           <td><strong>{{ user.ine ? user.ine : 'En attente' }}</strong></td>
           <td>{{ user.nom | uppercase }} {{ user.prenom }}</td>
           <td><code>{{ user.email }}</code></td>
@@ -87,7 +87,7 @@
               <span style="color: #999; font-style: italic;">Dossier Personnel RH</span>
             }
           </td>
-          <!-- 💡 Correction du texte d'affichage pour éviter les bugs visuels d'icônes -->
+
           <td>
             @if (user.role === 'ETUDIANT') {
               <span style="font-size:13px; display: block;">

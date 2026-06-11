@@ -28,7 +28,7 @@ public class Utilisateur {
 
     private boolean statutCompte = true;
 
-    // 🌟 EXTENSIONS SPECIFIQUES AU MODULE 5 (CAHIER DES CHARGES UNCHK)
+    //  EXTENSIONS SPECIFIQUES AU MODULE 5 (CAHIER DES CHARGES UNCHK)
     private String ine;
     private String dateNaissance;
     private String formation;
@@ -85,7 +85,7 @@ public class Utilisateur {
     public boolean isStatutCompte() { return statutCompte; }
     public void setStatutCompte(boolean statutCompte) { this.statutCompte = statutCompte; }
 
-    // 🌟 4. Getters et Setters des extensions académiques (Supprime les "En attente")
+    //  4. Getters et Setters des extensions académiques
     public String getIne() { return ine; }
     public void setIne(String ine) { this.ine = ine; }
 
